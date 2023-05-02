@@ -1,0 +1,433 @@
+﻿<Window x:Class="Library.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Library"
+        mc:Ignorable="d"
+        Title="Библиотека №6 «Истоки»" Height="600" Width="1000">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/фон.jpg" Stretch="Fill" Opacity="0.5" TileMode="Tile"/>
+        </Grid.Background>
+        <TabControl Background="{x:Null}">
+            <TabItem x:Name="TabIs" Header="Выдача книг" Padding="7" >
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                        <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Поиск:" FontSize="14" Margin="5,0,0,0" />
+                        <TextBox
+                            x:Name="TextBoxSearchIssue"
+                            Width="250"
+                            VerticalContentAlignment="Center"
+                            TextChanged="TextBoxSearchIssue_TextChanged"
+                            Height="25" 
+                            Margin="5"/>
+                        <Button
+                            x:Name="ClearSearch1"
+                            Width="65"
+                            Height="25"
+                            Margin="5"
+                            Click="ClearSearch_Click"
+                            Content="Очистить" />
+                        <Button
+                            x:Name="AddRowIssueButton"
+                            Width="65"
+                            Height="25"
+                            Margin="5"
+                            Click="AddRowIssueButton_Click"
+                            Content="Добавить" />
+                    </StackPanel>
+                    <DataGrid x:Name="DataGridIssuance" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding id_issuance}" Header="№" />
+                            <DataGridTextColumn Binding="{Binding Readers.Cut_Full_Name}" Header="Читатель" />
+                            <DataGridTemplateColumn Header="Книга" Width="*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock TextWrapping="Wrap" Text="{Binding Books.title}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Binding="{Binding Is_Date}" Header="Дата выдачи"/>
+                            <DataGridTextColumn Binding="{Binding Est_Date}" Header="Пред-я дата возвр."/>
+                            <DataGridTextColumn Binding="{Binding Extension_Period}" Header="Продление"/>
+                            <DataGridTextColumn Binding="{Binding Re_Date}" Header="Дата возврата"/>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button
+                                            Padding="2"
+                                            x:Name="EditRowIssue"
+                                            Click="EditRowIssue_Click"
+                                            Content="Изменить" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button
+                                            Padding="2"
+                                            x:Name="DeleteRowIssue"
+                                            Click="DeleteRowIssue_Click"
+                                            Content="Удалить" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Книги" Padding="7">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                        <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Поиск:" FontSize="14" Margin="5,0,0,0" />
+                        <TextBox
+                            x:Name="TextBoxSearchBook"
+                            Width="250"
+                            VerticalContentAlignment="Center"
+                            TextChanged="TextBoxSearchBook_TextChanged" 
+                            Height="25" 
+                            Margin="5" />
+                        <ComboBox
+                            x:Name="ComboBoxFilterAuthor"
+                            Width="145"
+                            Height="25" 
+                            SelectionChanged="ComboBoxFilterAuthor_SelectionChanged" 
+                            IsEditable="True" 
+                            Text="Автор/Соавтор"
+                            Margin="5"
+                            />
+                        <ComboBox
+                            x:Name="ComboBoxFilterPublisher"
+                            Width="180"
+                            Height="25" 
+                            SelectionChanged="ComboBoxFilterPublisher_SelectionChanged" 
+                            IsEditable="True" 
+                            Text="Издательство"
+                            Margin="5"
+                            />
+                        <ComboBox
+                            x:Name="ComboBoxFilterYear"
+                            Width="55"
+                            Height="25" 
+                            SelectionChanged="ComboBoxFilterYear_SelectionChanged" 
+                            IsEditable="True" 
+                            Text="Год"
+                            Margin="5"
+                            />
+                        <ComboBox
+                            x:Name="ComboBoxFilterDepartment"
+                            Width="65"
+                            Height="25" 
+                            SelectionChanged="ComboBoxFilterDepartment_SelectionChanged" 
+                            IsEditable="True" 
+                            Text="Отдел"
+                            Margin="5"
+                            />
+                        <Button
+                            x:Name="ClearSearch2"
+                            Width="85"
+                            Height="25"
+                            Margin="5"
+                            Click="ClearSearch_Click"
+                            Content="Очистить всё" />
+                        <Button
+                            x:Name="AddRowBookButton"
+                            Width="65"
+                            Height="25"
+                            Margin="5"
+                            Click="AddRowBookButton_Click"
+                            Content="Добавить" />
+                    </StackPanel>
+                    <DataGrid x:Name="DataGridBooks" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding id_books}" Header="Инв. №"/>
+                            <DataGridTemplateColumn Header="Название" Width="*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock TextWrapping="Wrap" Text="{Binding title}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Binding="{Binding Authors.Cut_Name}" Header="Автор"/>
+                            <DataGridTextColumn Binding="{Binding Authors1.Cut_Name}" Header="Соавтор"/>
+                            <DataGridTemplateColumn Header="Издательство" Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock TextWrapping="Wrap" Text="{Binding Publishers.publisher}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Binding="{Binding Release_year}" Header="Год"/>
+                            <DataGridTextColumn Binding="{Binding Page_Count}" Header="Стр."/>
+                            <DataGridTextColumn Binding="{Binding Departments.id}" Header="Отдел"/>
+                            <DataGridTextColumn Binding="{Binding Price_Total}" Header="Цена"/>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button
+                                            Padding="2"
+                                            x:Name="EditRowBook"
+                                            Click="EditRowBook_Click"
+                                            Content="Изменить" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button
+                                            Padding="2"
+                                            x:Name="DeleteRowBook"
+                                            Click="DeleteRowBook_Click"
+                                            Content="Удалить" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Читатели" Padding="7">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                        <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Поиск:" FontSize="14" Margin="5,0,0,0" />
+                        <TextBox
+                            x:Name="TextBoxSearchReader"
+                            Width="250"
+                            VerticalContentAlignment="Center"
+                            TextChanged="TextBoxSearchReader_TextChanged" 
+                            Height="25" 
+                            Margin="5" />
+                        <ComboBox
+                            x:Name="ComboBoxFilterReader"
+                            Width="120"
+                            Height="25" SelectionChanged="ComboBoxFilterReader_SelectionChanged" 
+                            IsEditable="True"
+                            Text="Пол"
+                            />
+                        <Button
+                            x:Name="ClearSearch3"
+                            Width="85"
+                            Height="25"
+                            Margin="5"
+                            Click="ClearSearch_Click"
+                            Content="Очистить всё" />
+                        <Button
+                            x:Name="AddRowReaderButton"
+                            Width="65"
+                            Height="25"
+                            Margin="5"
+                            Click="AddRowReaderButton_Click"
+                            Content="Добавить" />
+                    </StackPanel>
+                    <DataGrid x:Name="DataGridReaders" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding id_reader_card}" Header="№"/>
+                            <DataGridTextColumn Binding="{Binding F_Name}" Header="Фамилия"/>
+                            <DataGridTextColumn Binding="{Binding M_Name}" Header="Имя"/>
+                            <DataGridTextColumn Binding="{Binding L_Name}" Header="Отчество"/>
+                            <DataGridTextColumn Binding="{Binding BDay}" Header="Дата рождения"/>
+                            <DataGridTextColumn Binding="{Binding Genders.Gender_Name}" Header="Пол"/>
+                            <DataGridTextColumn Binding="{Binding Phone}" Header="Телефон"/>
+                            <DataGridTemplateColumn Header="Адрес" Width="*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock TextWrapping="Wrap" Text="{Binding address}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button
+                                        Padding="2"
+                                        x:Name="EditRowReader"
+                                        Click="EditRowReader_Click"
+                                        Content="Изменить" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button
+                                        Padding="2"
+                                        x:Name="DeleteRowReader"
+                                        Click="DeleteRowReader_Click"
+                                        Content="Удалить" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Авторы" Padding="7">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                        <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Поиск:" FontSize="14" Margin="5,0,0,0" />
+                        <TextBox
+                            x:Name="TextBoxSearchAuthor"
+                            Width="250"
+                            VerticalContentAlignment="Center"
+                            TextChanged="TextBoxSearchAutor_TextChanged" 
+                            Height="25" 
+                            Margin="5" />
+                        <Button
+                            x:Name="ClearSearch4"
+                            Width="65"
+                            Height="25"
+                            Margin="5"
+                            Click="ClearSearch_Click"
+                            Content="Очистить" />
+                        <Button
+                            x:Name="AddRowAuthorButton"
+                            Width="65"
+                            Height="25"
+                            Margin="5"
+                            Click="AddRowAuthorButton_Click"
+                            Content="Добавить" />
+                    </StackPanel>
+                    <DataGrid x:Name="DataGridAuthors" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding id_authors}" Header="№" />
+                            <DataGridTextColumn Binding="{Binding Name}" Width="*" Header="Фамилия Имя" />
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button
+                                        Padding="2"
+                                        x:Name="EditRowAuthor"
+                                        Click="EditRowAuthor_Click"
+                                        Content="Изменить" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button
+                                        Padding="2"
+                                        x:Name="DeleteRowAuthor"
+                                        Click="DeleteRowAuthor_Click"
+                                        Content="Удалить" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Издательства" Padding="7">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                        <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Поиск:" FontSize="14" Margin="5,0,0,0" />
+                        <TextBox
+                            x:Name="TextBoxSearchPublisher"
+                            Width="250"
+                            VerticalContentAlignment="Center"
+                            TextChanged="TextBoxSearchPublisher_TextChanged" 
+                            Height="25" 
+                            Margin="5" />
+                        <Button
+                            x:Name="ClearSearch5"
+                            Width="65"
+                            Height="25"
+                            Margin="5"
+                            Click="ClearSearch_Click"
+                            Content="Очистить" />
+                        <Button
+                            x:Name="AddRowPublisherButton"
+                            Width="65"
+                            Height="25"
+                            Margin="5"
+                            Click="AddRowPublisherButton_Click"
+                            Content="Добавить" />
+                    </StackPanel>
+                    <DataGrid x:Name="DataGridPublishers" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding id_publishers}" Header="№" />
+                            <DataGridTextColumn Binding="{Binding publisher}" Width="*" Header="Наименование" />
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button
+                                            Padding="2"
+                                            x:Name="EditRowPublisher"
+                                            Click="EditRowPublisher_Click"
+                                            Content="Изменить" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button
+                                            Padding="2"
+                                            x:Name="DeleteRowPublisher"
+                                            Click="DeleteRowPublisher_Click"
+                                            Content="Удалить" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </TabItem>
+            <TabItem x:Name="TabDepart">
+                <TabItem.Header>
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal" Margin="-5,0,0,0">
+                            <Label VerticalAlignment="Center" Content="Отделы" />
+                            <CheckBox 
+                                x:Name="CheckOnOff" 
+                                VerticalAlignment="Center" 
+                                Checked="CheckOnOff_Checked" 
+                                Unchecked="CheckOnOff_Unchecked"
+                                Opacity="0"/>
+                            <Image 
+                                Margin="-16,0,0,0"
+                                Height="15"
+                                Width="16"
+                                Source="/о-.png" 
+                                Stretch="UniformToFill"
+                                Opacity="0.5" 
+                                IsHitTestVisible="False"/>                            
+                            <TextBox
+                                x:Name="TextBoxSearchDepartment"
+                                Width="150"
+                                VerticalContentAlignment="Center"
+                                TextChanged="TextBoxSearchDepartment_TextChanged" 
+                                Height="20"
+                                Margin="5,0,0,0"
+                                Visibility="Collapsed"/>
+                            <Button 
+                                x:Name="ClearSearch6"
+                                VerticalContentAlignment="Center"
+                                HorizontalContentAlignment="Center"
+                                Width="15"
+                                Height="15"
+                                Margin="5,0,0,0" 
+                                BorderBrush="{x:Null}" 
+                                Foreground="{x:Null}" Click="ClearSearch_Click" 
+                                Visibility="Collapsed">
+                                <Button.Background>
+                                    <ImageBrush Stretch="Uniform" ImageSource="/х.png" Opacity="0.5"/>
+                                </Button.Background>
+                                
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem.Header>
+                <DataGrid x:Name="DataGridDepartments"  AutoGenerateColumns="False">
+                    <DataGrid.Columns >
+                        <DataGridTextColumn Binding="{Binding id}" Header="Код" />
+                        <DataGridTextColumn Binding="{Binding department}" Width="*" Header="Название" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

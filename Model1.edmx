@@ -1,0 +1,538 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище LibraryModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Authors">
+          <Key>
+            <PropertyRef Name="id_authors" />
+          </Key>
+          <Property Name="id_authors" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="Books">
+          <Key>
+            <PropertyRef Name="id_books" />
+          </Key>
+          <Property Name="id_books" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nchar" MaxLength="100" />
+          <Property Name="Author" Type="int" />
+          <Property Name="Co_Author" Type="int" />
+          <Property Name="Publisher" Type="int" />
+          <Property Name="Release_year" Type="int" />
+          <Property Name="Page_Count" Type="int" />
+          <Property Name="Department" Type="nchar" MaxLength="16" />
+          <Property Name="Price" Type="money" />
+        </EntityType>
+        <EntityType Name="Departments">
+          <Key>
+            <PropertyRef Name="id_department" />
+          </Key>
+          <Property Name="id_department" Type="nchar" MaxLength="16" Nullable="false" />
+          <Property Name="Department_Name" Type="nchar" MaxLength="105" />
+        </EntityType>
+        <EntityType Name="Genders">
+          <Key>
+            <PropertyRef Name="id_gender" />
+          </Key>
+          <Property Name="id_gender" Type="int" Nullable="false" />
+          <Property Name="Gender_Name" Type="nchar" MaxLength="7" />
+        </EntityType>
+        <EntityType Name="Issuance">
+          <Key>
+            <PropertyRef Name="id_issuance" />
+          </Key>
+          <Property Name="id_issuance" Type="int" Nullable="false" />
+          <Property Name="Reader" Type="int" Nullable="false" />
+          <Property Name="Book" Type="int" Nullable="false" />
+          <Property Name="Issue_Date" Type="date" Nullable="false" />
+          <Property Name="Est_Return_Date" Type="date" Nullable="false" />
+          <Property Name="Extension_Period" Type="int" />
+          <Property Name="Return_Date" Type="date" />
+        </EntityType>
+        <EntityType Name="Publishers">
+          <Key>
+            <PropertyRef Name="id_publishers" />
+          </Key>
+          <Property Name="id_publishers" Type="int" Nullable="false" />
+          <Property Name="Publisher_Name" Type="nchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Readers">
+          <Key>
+            <PropertyRef Name="id_reader_card" />
+          </Key>
+          <Property Name="id_reader_card" Type="int" Nullable="false" />
+          <Property Name="First_Name" Type="nchar" MaxLength="30" />
+          <Property Name="Middle_Name" Type="nchar" MaxLength="30" />
+          <Property Name="Last_Name" Type="nchar" MaxLength="30" />
+          <Property Name="Birthday" Type="date" />
+          <Property Name="Gender" Type="int" />
+          <Property Name="Address" Type="nchar" MaxLength="50" />
+          <Property Name="Phone" Type="nchar" MaxLength="11" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_Books_Authors">
+          <End Role="Authors" Type="Self.Authors" Multiplicity="0..1" />
+          <End Role="Books" Type="Self.Books" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Authors">
+              <PropertyRef Name="id_authors" />
+            </Principal>
+            <Dependent Role="Books">
+              <PropertyRef Name="Author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Books_Authors1">
+          <End Role="Authors" Type="Self.Authors" Multiplicity="0..1" />
+          <End Role="Books" Type="Self.Books" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Authors">
+              <PropertyRef Name="id_authors" />
+            </Principal>
+            <Dependent Role="Books">
+              <PropertyRef Name="Co_Author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Books_Departments">
+          <End Role="Departments" Type="Self.Departments" Multiplicity="0..1" />
+          <End Role="Books" Type="Self.Books" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departments">
+              <PropertyRef Name="id_department" />
+            </Principal>
+            <Dependent Role="Books">
+              <PropertyRef Name="Department" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Books_Publishers1">
+          <End Role="Publishers" Type="Self.Publishers" Multiplicity="0..1" />
+          <End Role="Books" Type="Self.Books" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Publishers">
+              <PropertyRef Name="id_publishers" />
+            </Principal>
+            <Dependent Role="Books">
+              <PropertyRef Name="Publisher" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Issuance_Books">
+          <End Role="Books" Type="Self.Books" Multiplicity="1" />
+          <End Role="Issuance" Type="Self.Issuance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="id_books" />
+            </Principal>
+            <Dependent Role="Issuance">
+              <PropertyRef Name="Book" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Issuance_Readers">
+          <End Role="Readers" Type="Self.Readers" Multiplicity="1" />
+          <End Role="Issuance" Type="Self.Issuance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Readers">
+              <PropertyRef Name="id_reader_card" />
+            </Principal>
+            <Dependent Role="Issuance">
+              <PropertyRef Name="Reader" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Readers_Genders">
+          <End Role="Genders" Type="Self.Genders" Multiplicity="0..1" />
+          <End Role="Readers" Type="Self.Readers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genders">
+              <PropertyRef Name="id_gender" />
+            </Principal>
+            <Dependent Role="Readers">
+              <PropertyRef Name="Gender" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище LibraryModelContainer">
+          <EntitySet Name="Authors" EntityType="Self.Authors" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Books" EntityType="Self.Books" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Departments" EntityType="Self.Departments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Genders" EntityType="Self.Genders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Issuance" EntityType="Self.Issuance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Publishers" EntityType="Self.Publishers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Readers" EntityType="Self.Readers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Books_Authors" Association="Self.FK_Books_Authors">
+            <End Role="Authors" EntitySet="Authors" />
+            <End Role="Books" EntitySet="Books" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Books_Authors1" Association="Self.FK_Books_Authors1">
+            <End Role="Authors" EntitySet="Authors" />
+            <End Role="Books" EntitySet="Books" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Books_Departments" Association="Self.FK_Books_Departments">
+            <End Role="Departments" EntitySet="Departments" />
+            <End Role="Books" EntitySet="Books" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Books_Publishers1" Association="Self.FK_Books_Publishers1">
+            <End Role="Publishers" EntitySet="Publishers" />
+            <End Role="Books" EntitySet="Books" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Issuance_Books" Association="Self.FK_Issuance_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="Issuance" EntitySet="Issuance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Issuance_Readers" Association="Self.FK_Issuance_Readers">
+            <End Role="Readers" EntitySet="Readers" />
+            <End Role="Issuance" EntitySet="Issuance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Readers_Genders" Association="Self.FK_Readers_Genders">
+            <End Role="Genders" EntitySet="Genders" />
+            <End Role="Readers" EntitySet="Readers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LibraryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Authors">
+          <Key>
+            <PropertyRef Name="id_authors" />
+          </Key>
+          <Property Name="id_authors" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Books" Relationship="Self.FK_Books_Authors" FromRole="Authors" ToRole="Books" />
+          <NavigationProperty Name="Books1" Relationship="Self.FK_Books_Authors1" FromRole="Authors" ToRole="Books" />
+        </EntityType>
+        <EntityType Name="Books">
+          <Key>
+            <PropertyRef Name="id_books" />
+          </Key>
+          <Property Name="id_books" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="Author" Type="Int32" />
+          <Property Name="Co_Author" Type="Int32" />
+          <Property Name="Publisher" Type="Int32" />
+          <Property Name="Release_year" Type="Int32" />
+          <Property Name="Page_Count" Type="Int32" />
+          <Property Name="Department" Type="String" MaxLength="16" FixedLength="true" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="Authors" Relationship="Self.FK_Books_Authors" FromRole="Books" ToRole="Authors" />
+          <NavigationProperty Name="Authors1" Relationship="Self.FK_Books_Authors1" FromRole="Books" ToRole="Authors" />
+          <NavigationProperty Name="Departments" Relationship="LibraryModel.FK_Books_Department" FromRole="Books" ToRole="Departments" />
+          <NavigationProperty Name="Publishers" Relationship="Self.FK_Books_Publishers1" FromRole="Books" ToRole="Publishers" />
+          <NavigationProperty Name="Issuance" Relationship="Self.FK_Issuance_Books" FromRole="Books" ToRole="Issuance" />
+        </EntityType>
+        <EntityType Name="Departments">
+          <Key>
+            <PropertyRef Name="id_department" />
+          </Key>
+          <Property Name="id_department" Type="String" MaxLength="16" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Department_Name" Type="String" MaxLength="105" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Books" Relationship="LibraryModel.FK_Books_Department" FromRole="Departments" ToRole="Books" />
+        </EntityType>
+        <EntityType Name="Genders">
+          <Key>
+            <PropertyRef Name="id_gender" />
+          </Key>
+          <Property Name="id_gender" Type="Int32" Nullable="false" />
+          <Property Name="Gender_Name" Type="String" MaxLength="7" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Readers" Relationship="Self.FK_Readers_Genders" FromRole="Genders" ToRole="Readers" />
+        </EntityType>
+        <EntityType Name="Issuance">
+          <Key>
+            <PropertyRef Name="id_issuance" />
+          </Key>
+          <Property Name="id_issuance" Type="Int32" Nullable="false" />
+          <Property Name="Reader" Type="Int32" Nullable="false" />
+          <Property Name="Book" Type="Int32" Nullable="false" />
+          <Property Name="Issue_Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Est_Return_Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Extension_Period" Type="Int32" />
+          <Property Name="Return_Date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Books" Relationship="Self.FK_Issuance_Books" FromRole="Issuance" ToRole="Books" />
+          <NavigationProperty Name="Readers" Relationship="Self.FK_Issuance_Readers" FromRole="Issuance" ToRole="Readers" />
+        </EntityType>
+        <EntityType Name="Publishers">
+          <Key>
+            <PropertyRef Name="id_publishers" />
+          </Key>
+          <Property Name="id_publishers" Type="Int32" Nullable="false" />
+          <Property Name="Publisher_Name" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Books" Relationship="Self.FK_Books_Publishers1" FromRole="Publishers" ToRole="Books" />
+        </EntityType>
+        <EntityType Name="Readers">
+          <Key>
+            <PropertyRef Name="id_reader_card" />
+          </Key>
+          <Property Name="id_reader_card" Type="Int32" Nullable="false" />
+          <Property Name="First_Name" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
+          <Property Name="Middle_Name" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
+          <Property Name="Last_Name" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
+          <Property Name="Birthday" Type="DateTime" Precision="0" />
+          <Property Name="Gender" Type="Int32" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="11" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Genders" Relationship="Self.FK_Readers_Genders" FromRole="Readers" ToRole="Genders" />
+          <NavigationProperty Name="Issuance" Relationship="Self.FK_Issuance_Readers" FromRole="Readers" ToRole="Issuance" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_Books_Authors">
+          <End Role="Authors" Type="Self.Authors" Multiplicity="0..1" />
+          <End Role="Books" Type="Self.Books" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Authors">
+              <PropertyRef Name="id_authors" />
+            </Principal>
+            <Dependent Role="Books">
+              <PropertyRef Name="Author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Books_Authors1">
+          <End Role="Authors" Type="Self.Authors" Multiplicity="0..1" />
+          <End Role="Books" Type="Self.Books" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Authors">
+              <PropertyRef Name="id_authors" />
+            </Principal>
+            <Dependent Role="Books">
+              <PropertyRef Name="Co_Author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Books_Department">
+          <End Role="Departments" Type="Self.Departments" Multiplicity="0..1" />
+          <End Role="Books" Type="Self.Books" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departments">
+              <PropertyRef Name="id_department" />
+            </Principal>
+            <Dependent Role="Books">
+              <PropertyRef Name="Department" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Books_Publishers1">
+          <End Role="Publishers" Type="Self.Publishers" Multiplicity="0..1" />
+          <End Role="Books" Type="Self.Books" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Publishers">
+              <PropertyRef Name="id_publishers" />
+            </Principal>
+            <Dependent Role="Books">
+              <PropertyRef Name="Publisher" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Issuance_Books">
+          <End Role="Books" Type="Self.Books" Multiplicity="1" />
+          <End Role="Issuance" Type="Self.Issuance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="id_books" />
+            </Principal>
+            <Dependent Role="Issuance">
+              <PropertyRef Name="Book" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Readers_Genders">
+          <End Role="Genders" Type="Self.Genders" Multiplicity="0..1" />
+          <End Role="Readers" Type="Self.Readers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genders">
+              <PropertyRef Name="id_gender" />
+            </Principal>
+            <Dependent Role="Readers">
+              <PropertyRef Name="Gender" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Issuance_Readers">
+          <End Role="Readers" Type="Self.Readers" Multiplicity="1" />
+          <End Role="Issuance" Type="Self.Issuance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Readers">
+              <PropertyRef Name="id_reader_card" />
+            </Principal>
+            <Dependent Role="Issuance">
+              <PropertyRef Name="Reader" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Authors" EntityType="Self.Authors" />
+          <EntitySet Name="Books" EntityType="Self.Books" />
+          <EntitySet Name="Departments" EntityType="Self.Departments" />
+          <EntitySet Name="Genders" EntityType="Self.Genders" />
+          <EntitySet Name="Issuance" EntityType="Self.Issuance" />
+          <EntitySet Name="Publishers" EntityType="Self.Publishers" />
+          <EntitySet Name="Readers" EntityType="Self.Readers" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="FK_Books_Authors" Association="Self.FK_Books_Authors">
+            <End Role="Authors" EntitySet="Authors" />
+            <End Role="Books" EntitySet="Books" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Books_Authors1" Association="Self.FK_Books_Authors1">
+            <End Role="Authors" EntitySet="Authors" />
+            <End Role="Books" EntitySet="Books" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Books_Department" Association="LibraryModel.FK_Books_Department">
+            <End Role="Departments" EntitySet="Departments" />
+            <End Role="Books" EntitySet="Books" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Books_Publishers1" Association="Self.FK_Books_Publishers1">
+            <End Role="Publishers" EntitySet="Publishers" />
+            <End Role="Books" EntitySet="Books" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Issuance_Books" Association="Self.FK_Issuance_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="Issuance" EntitySet="Issuance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Readers_Genders" Association="Self.FK_Readers_Genders">
+            <End Role="Genders" EntitySet="Genders" />
+            <End Role="Readers" EntitySet="Readers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Issuance_Readers" Association="Self.FK_Issuance_Readers">
+            <End Role="Readers" EntitySet="Readers" />
+            <End Role="Issuance" EntitySet="Issuance" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище LibraryModelContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Authors">
+            <EntityTypeMapping TypeName="LibraryModel.Authors">
+              <MappingFragment StoreEntitySet="Authors">
+                <ScalarProperty Name="id_authors" ColumnName="id_authors" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Books">
+            <EntityTypeMapping TypeName="LibraryModel.Books">
+              <MappingFragment StoreEntitySet="Books">
+                <ScalarProperty Name="id_books" ColumnName="id_books" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="Co_Author" ColumnName="Co_Author" />
+                <ScalarProperty Name="Publisher" ColumnName="Publisher" />
+                <ScalarProperty Name="Release_year" ColumnName="Release_year" />
+                <ScalarProperty Name="Page_Count" ColumnName="Page_Count" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Departments">
+            <EntityTypeMapping TypeName="LibraryModel.Departments">
+              <MappingFragment StoreEntitySet="Departments">
+                <ScalarProperty Name="id_department" ColumnName="id_department" />
+                <ScalarProperty Name="Department_Name" ColumnName="Department_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Genders">
+            <EntityTypeMapping TypeName="LibraryModel.Genders">
+              <MappingFragment StoreEntitySet="Genders">
+                <ScalarProperty Name="id_gender" ColumnName="id_gender" />
+                <ScalarProperty Name="Gender_Name" ColumnName="Gender_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Issuance">
+            <EntityTypeMapping TypeName="LibraryModel.Issuance">
+              <MappingFragment StoreEntitySet="Issuance">
+                <ScalarProperty Name="id_issuance" ColumnName="id_issuance" />
+                <ScalarProperty Name="Reader" ColumnName="Reader" />
+                <ScalarProperty Name="Book" ColumnName="Book" />
+                <ScalarProperty Name="Issue_Date" ColumnName="Issue_Date" />
+                <ScalarProperty Name="Est_Return_Date" ColumnName="Est_Return_Date" />
+                <ScalarProperty Name="Extension_Period" ColumnName="Extension_Period" />
+                <ScalarProperty Name="Return_Date" ColumnName="Return_Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Publishers">
+            <EntityTypeMapping TypeName="LibraryModel.Publishers">
+              <MappingFragment StoreEntitySet="Publishers">
+                <ScalarProperty Name="id_publishers" ColumnName="id_publishers" />
+                <ScalarProperty Name="Publisher_Name" ColumnName="Publisher_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Readers">
+            <EntityTypeMapping TypeName="LibraryModel.Readers">
+              <MappingFragment StoreEntitySet="Readers">
+                <ScalarProperty Name="id_reader_card" ColumnName="id_reader_card" />
+                <ScalarProperty Name="First_Name" ColumnName="First_Name" />
+                <ScalarProperty Name="Middle_Name" ColumnName="Middle_Name" />
+                <ScalarProperty Name="Last_Name" ColumnName="Last_Name" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="LibraryModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
